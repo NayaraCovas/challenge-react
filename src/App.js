@@ -64,12 +64,14 @@ class App extends Component {
             <p>UserName: {this.state.userName}</p>
             <p>Location: {this.state.location}</p>
             <p>Email Address: {this.state.emailAddress}</p>
+            <Repos repos={this.state.repos} />
           </div>
+          
         ) : (
           <p>Please enter a username.</p>
+          
         )}
-        <h1>User Repositories: </h1>
-        <Repos repos={this.state.repos} />
+        
       </div>
     );
   }
