@@ -11,7 +11,8 @@ class App extends Component {
     repos: null,
     location:null,
     fullName:null,
-    userName:null
+    userName:null,
+    emailAddress:null,
 
   };
 
@@ -34,10 +35,13 @@ class App extends Component {
         console.log(repos);
         const location = res.data.location;
         console.log(location)
+        const emailAddress = res.data.email;
+        console.log(emailAddress)
         this.setState({ fullName: fullName });
         this.setState({ userName: userName });
         this.setState({ repos: repos }); //the property of the state that we need is repos that we need to set this to repos (const repos = res.data.public_repos;)
         this.setState({ location: location }); 
+        this.setState({ emailAddress: emailAddress });
       });
     } else return;
   };
@@ -55,6 +59,7 @@ class App extends Component {
     <p>Full Name: {this.state.fullName}</p>
     <p>UserName: {this.state.userName}</p>
     <p>Location: {this.state.location}</p>
+    <p>Email Address: {this.state.emailAddress}</p>
   </div>
 ) : (
   <p>Please enter a username.</p>
