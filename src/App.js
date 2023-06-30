@@ -9,7 +9,10 @@ import UserForm from "./components/UserForm";
 class App extends Component {
   state = {
     repos: null,
-    location:''
+    location:null,
+    fullName:null,
+    userName:null
+
   };
 
   getUser = (e) => {
@@ -22,10 +25,17 @@ class App extends Component {
       axios.get(`http://api.github.com/users/${user}?client_id=bee4538f17de180181c0&client_secret=5df6881bfb137f5bf30673b198a74e9e5b63cc0b&sort=created`).then((res) => {
         //the res is storing the results that we need from this api
         console.log(res)
-        const repos = res.data.public_repos;
-        //console.log(repos);
+        const fullName = res.data.name
+        console.log(fullName)
+        const userName = res.data.login
+        console.log(userName)
+        const repos = res.data.repos_url
+        ;
+        console.log(repos);
         const location = res.data.location;
         console.log(location)
+        this.setState({ fullName: fullName });
+        this.setState({ userName: userName });
         this.setState({ repos: repos }); //the property of the state that we need is repos that we need to set this to repos (const repos = res.data.public_repos;)
         this.setState({ location: location }); 
       });
@@ -41,7 +51,9 @@ class App extends Component {
         <UserForm getUser={this.getUser} />
         {this.state.repos ? (
   <div>
-    <p>Number of repos: {this.state.repos}</p>
+    <p>User Repositories: {this.state.repos}</p>
+    <p>Full Name: {this.state.fullName}</p>
+    <p>UserName: {this.state.userName}</p>
     <p>Location: {this.state.location}</p>
   </div>
 ) : (
