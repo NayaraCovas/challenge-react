@@ -50,7 +50,11 @@ class App extends Component {
           this.setState({ repos: reposRes.data }); //the property of the state that we need is repos that we need to set this to repos 
 
         })
-      });
+      }).catch((err) => {
+      console.log(err);
+      alert('User not found')
+    });
+     
     } else return;
   };
 
