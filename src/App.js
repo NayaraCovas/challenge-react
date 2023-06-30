@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "./App.css";
-//I want to be able to type the name of the user and get the number of repos that he has so in this case we are only be concerned about the "public_repos" nd my infos property 
+//I want to be able to type the name of the user and get the repos that I have so in this case I am only be concerned about the "repos_url" nd my infos properties 
 //http://api.github.com/users/<USER_NAME>?client_id=<YOUR_CLIENT_ID>&client_secret=<YOUR_CLIENT_SECRET>&sort=created
 
 import UserForm from "./components/UserForm";
+import Repos from "./components/Repos";
 
 class App extends Component {
   state = {
-    repos: null,
+    repos: [],
     location:null,
     fullName:null,
     userName:null,
@@ -30,8 +31,7 @@ class App extends Component {
         console.log(fullName)
         const userName = res.data.login
         console.log(userName)
-        const repos = res.data.repos_url
-        ;
+        const repos = res.data.repos_url;
         console.log(repos);
         const location = res.data.location;
         console.log(location)
@@ -39,9 +39,13 @@ class App extends Component {
         console.log(emailAddress)
         this.setState({ fullName: fullName });
         this.setState({ userName: userName });
-        this.setState({ repos: repos }); //the property of the state that we need is repos that we need to set this to repos (const repos = res.data.public_repos;)
         this.setState({ location: location }); 
         this.setState({ emailAddress: emailAddress });
+        axios.get(repos).then((reposRes) => {
+          console.log(reposRes.data)
+          this.setState({ repos: reposRes.data }); //the property of the state that we need is repos that we need to set this to repos (const repos = res.data.public_repos;)
+
+        })
       });
     } else return;
   };
@@ -50,20 +54,22 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">HTTP Calls in React</h1>
+          <h1 className="App-title">HTTP Calls to GitHub - React challenge</h1>
         </header>
         <UserForm getUser={this.getUser} />
-        {this.state.repos ? (
-  <div>
-    <p>User Repositories: {this.state.repos}</p>
-    <p>Full Name: {this.state.fullName}</p>
-    <p>UserName: {this.state.userName}</p>
-    <p>Location: {this.state.location}</p>
-    <p>Email Address: {this.state.emailAddress}</p>
-  </div>
-) : (
-  <p>Please enter a username.</p>
-)}
+        {this.state.repos.length > 0 ? (
+          <div>
+            <p>User Repositories: {this.state.repos.length}</p>
+            <p>Full Name: {this.state.fullName}</p>
+            <p>UserName: {this.state.userName}</p>
+            <p>Location: {this.state.location}</p>
+            <p>Email Address: {this.state.emailAddress}</p>
+          </div>
+        ) : (
+          <p>Please enter a username.</p>
+        )}
+        <h1>User Repositories: </h1>
+        <Repos repos={this.state.repos} />
       </div>
     );
   }
