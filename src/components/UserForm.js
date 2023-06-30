@@ -8,7 +8,7 @@ const UserForm = (props) => {//in order to acces the props of this component we 
 
     return (
         <form onSubmit={props.getUser}> 
-            <input style={{margin:"20px auto", display:"block"}}type="text" name="username"/>
+            <input style={{margin:"20px auto", display:"block"}}type="text" name="username" />
             <button> Submit</button>
 
         </form>

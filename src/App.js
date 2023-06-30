@@ -14,6 +14,7 @@ class App extends Component {
     fullName:null,
     userName:null,
     emailAddress:null,
+    photo:null,
 
   };
 
@@ -27,6 +28,8 @@ class App extends Component {
       axios.get(`http://api.github.com/users/${user}?client_id=bee4538f17de180181c0&client_secret=5df6881bfb137f5bf30673b198a74e9e5b63cc0b&sort=created`).then((res) => {
         //the res is storing the results that we need from this api
         console.log(res)
+        const photo = res.data.avatar_url
+        console.log(photo)
         const fullName = res.data.name
         console.log(fullName)
         const userName = res.data.login
@@ -37,13 +40,14 @@ class App extends Component {
         console.log(location)
         const emailAddress = res.data.email;
         console.log(emailAddress)
+        this.setState({ photo: photo });
         this.setState({ fullName: fullName });
         this.setState({ userName: userName });
         this.setState({ location: location }); 
         this.setState({ emailAddress: emailAddress });
         axios.get(repos).then((reposRes) => {
           console.log(reposRes.data)
-          this.setState({ repos: reposRes.data }); //the property of the state that we need is repos that we need to set this to repos (const repos = res.data.public_repos;)
+          this.setState({ repos: reposRes.data }); //the property of the state that we need is repos that we need to set this to repos 
 
         })
       });
@@ -59,6 +63,7 @@ class App extends Component {
         <UserForm getUser={this.getUser} />
         {this.state.repos.length > 0 ? (
           <div>
+            <img className= "userphoto" src={this.state.photo} alt="SearchedUser" />
             <p>User Repositories: {this.state.repos.length}</p>
             <p>Full Name: {this.state.fullName}</p>
             <p>UserName: {this.state.userName}</p>
